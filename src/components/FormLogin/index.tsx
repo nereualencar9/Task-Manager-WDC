@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Container } from "./style";
+import { Button } from "../Button";
 
 type InputsTypes = {
   email: string;
@@ -22,8 +23,7 @@ export function FormLogin() {
   return (
     <Container>
       <form onSubmit={handleSubmit(onSubmit)}>
-       
-      <section>
+        <section>
           <label>
             Email:
             <input
@@ -47,17 +47,16 @@ export function FormLogin() {
             <input
               type="password"
               placeholder="digite sua senha"
-              {...register("email", {
+              {...register("password", {
                 required: "Campo obrigatório",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Endereço de e-mail inválido",
-                },
               })}
             />
           </label>
           <span className="inputError">{errors.password?.message}</span>
         </section>
+
+        <Button title="Login" loading={false} />
+      
       </form>
     </Container>
   );
