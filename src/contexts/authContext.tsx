@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { API } from "../configs/ai";
 import { STORAGE_USERID_KEY } from "../utils/userIdAuthkey";
 
@@ -60,7 +60,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     return API.post("/user", { name, email, password })
       .then((response) => {
-        if (response.data.status == 201) {
+        if (response.status == 201) {
           alert("Usuário cadastrado com sucesso!");
         }
 
@@ -77,11 +77,33 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   function signOut() {
     setAuthUserID("");
+    localStorage.removeItem(STORAGE_USERID_KEY);
 
     API.post("/logout").catch((error) => {
       console.error(error);
     });
   }
+
+  useEffect(() => {
+    const userIDStorage = localStorage.getItem(STORAGE_USERID_KEY);
+
+    if (userIDStorage) {
+      const userID = JSON.parse(userIDStorage);
+
+      API.get("/user")
+        .then((response) => {
+          if (userID == response.data.id) {
+            setAuthUserID(userID);
+          } else {
+            signOut();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response.status == 401) signOut();
+        });
+    }
+  }, []);
 
   return (
     <AuthContext.Provider

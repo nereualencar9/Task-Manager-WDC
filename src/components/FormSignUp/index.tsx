@@ -29,8 +29,8 @@ export function FormSignUp() {
     const isUserCreated = await signUp({ name, email, password });
 
     if (isUserCreated) {
-    reset();
-    navigate("/");
+      reset();
+      navigate("/");
     }
   };
 
@@ -41,6 +41,7 @@ export function FormSignUp() {
           <label>
             Nome:
             <input
+              autoFocus
               type="text"
               placeholder="exemplo@email.com"
               {...register("name", {
