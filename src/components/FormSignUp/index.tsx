@@ -17,20 +17,16 @@ export function FormSignUp() {
     formState: { errors },
     reset,
   } = useForm<InputsTypes>();
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const { signUp, isLoading } = useAuth();
 
-  const onSubmit: SubmitHandler<InputsTypes> = async ({
-    name,
-    email,
-    password,
-  }) => {
+  const onSubmit: SubmitHandler<InputsTypes> = async ({ name, email, password }) => {
     const isUserCreated = await signUp({ name, email, password });
 
     if (isUserCreated) {
-      reset();
       navigate("/");
+      reset();
     }
   };
 
@@ -43,14 +39,18 @@ export function FormSignUp() {
             <input
               autoFocus
               type="text"
-              placeholder="exemplo@email.com"
+              placeholder="Digite seu nome"
               {...register("name", {
                 required: "Campo obrigatório",
                 minLength: { value: 3, message: "Mínimo de 3 caracteres" },
+                pattern: {
+                  value: /^[a-zA-Z\s]+$/i,
+                  message: "Apenas letras são permitidas",
+                },
               })}
             />
           </label>
-          <span className="inputError">{errors.email?.message}</span>
+          <span className="inputError">{errors.name?.message}</span>
         </section>
 
         <section>
@@ -84,8 +84,7 @@ export function FormSignUp() {
                   message: "A senha deve ter no mínimo 7 dígitos",
                 },
                 pattern: {
-                  value:
-                    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?,./\\[\]-]).+$/,
+                  value: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:"<>?,./\\[\]-]).+$/,
                   message:
                     "A senha deve ter número, letra maiúscula e caractere especial",
                 },

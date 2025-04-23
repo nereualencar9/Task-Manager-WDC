@@ -1,7 +1,6 @@
 import { ButtonStyleType, Container } from "./style";
 import loadingGif from "../../assets/loading.gif";
 
-
 type ButtonTypes = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   title: string;
   variant?: ButtonStyleType;

@@ -1,13 +1,13 @@
+import { Link, useNavigate } from "react-router-dom";
 import { Container } from "./style";
 import logoReprogramaJucas from "../../assets/logo-rj.png";
-import { Link, useNavigate } from "react-router-dom";
 import { FormSignUp } from "../../components/FormSignUp";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 export function SignUp() {
   const navigate = useNavigate();
-   const { isLoading } = useAuth();
+  const { isLoading } = useAuth();
   const [delay, setDelay] = useState(true);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function SignUp() {
         <FormSignUp />
 
         <div className="messageChangePage">
-          <span>Não tem conta? </span>
+          <span>Já tem uma conta? </span>
           <button onClick={() => navigate("/")} disabled={isLoading}>
             Login
           </button>

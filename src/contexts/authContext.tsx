@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import { API } from "../configs/ai";
-import { STORAGE_USERID_KEY } from "../utils/userIdAuthkey";
+import { API } from "../configs/api";
+import { STORAGE_USERID_KEY } from "../utils/userIdAuthKey";
 
 export type SignInTypes = {
   email: string;
@@ -21,9 +21,7 @@ type AuthContextTypes = {
   isLoading: boolean;
 };
 
-export const AuthContext = createContext<AuthContextTypes>(
-  {} as AuthContextTypes
-);
+export const AuthContext = createContext<AuthContextTypes>({} as AuthContextTypes);
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [authUserID, setAuthUserID] = useState("");
@@ -54,7 +52,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   async function signUp({ name, email, password }: SignUpTypes) {
     if (!name || !email || !password)
-      throw alert("Por favor informar email e senha");
+      throw alert("Por favor informar nome, email e senha");
 
     setIsLoading(true);
 
@@ -100,15 +98,16 @@ export function AuthProvider({ children }: PropsWithChildren) {
         })
         .catch((error) => {
           console.error(error);
-          if (error.response.status == 401) signOut();
+
+          if (error.response.status == 401) {
+            signOut();
+          }
         });
     }
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ signIn, signOut, signUp, authUserID, isLoading }}
-    >
+    <AuthContext.Provider value={{ signIn, signOut, signUp, authUserID, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

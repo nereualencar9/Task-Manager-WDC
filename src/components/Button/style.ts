@@ -12,7 +12,7 @@ export const Container = styled.button<ButtonContainerStyles>`
   box-shadow: 1px 1px 1px #0004;
   border-radius: 8px;
   font-size: 1.4rem;
-  font-weight: 700rem;
+  font-weight: 700;
   padding: 1.2rem;
   width: 100%;
   margin: 0 auto;

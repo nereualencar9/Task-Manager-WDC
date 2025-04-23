@@ -8,9 +8,10 @@ export function App() {
   return (
     <Container>
       <Header />
+
       <article>
         <section className="sideBar">
-          <SideBar /> 
+          <SideBar />
         </section>
         <Outlet /> {/* main pages */}
       </article>
