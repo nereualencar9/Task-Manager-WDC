@@ -54,16 +54,16 @@ export function useQueryTasks() {
   }
 
   function nextPage() {
-    if (page > 1) {
+    if (page < totalPages) {
       setPage((prev) => prev + 1);
-      navigate(`/tasks?page=${page + 1}&filter=${filter}`);
+      navigate(`?page=${page + 1}&filter=${filter}`);
     }
   }
 
   function prevPage() {
     if (page > 1) {
       setPage((prev) => prev - 1);
-      navigate(`/tasks?page=${page - 1}&filter=${filter}`);
+      navigate(`?page=${page - 1}&filter=${filter}`);
     }
   }
 
@@ -89,7 +89,7 @@ export function useQueryTasks() {
 
       if (totalPages > 0) {
         if (pageQuery > totalPages) {
-          navigate(`/tasks?page=${totalPages}&filter=${filterQuery}`);
+          navigate(`?page=${totalPages}&filter=${filterQuery}`);
           setPage(totalPages);
           return;
         }
@@ -97,8 +97,8 @@ export function useQueryTasks() {
 
       if (pageQuery < 1) {
         if (pageQuery > totalPages) {
-          navigate(`/tasks?page=${totalPages}&filter=${filterQuery}`);
-          setPage(totalPages);
+          navigate(`?page=1&filter=${filterQuery}`);
+          setPage(1);
           return;
         }
       }
@@ -106,7 +106,7 @@ export function useQueryTasks() {
   }, [page, totalPages, searchParams, navigate, location]);
 
   const query = useQuery({
-    queryKey: ["tasksData"],
+    queryKey: ["tasksData", page, limit, filter ],
     queryFn: () => getTasks({ page, limit, filter }),
   });
 
