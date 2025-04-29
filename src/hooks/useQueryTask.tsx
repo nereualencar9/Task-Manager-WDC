@@ -85,7 +85,7 @@ export function useQueryTasks() {
       const filterQuery = searchParams[0].get("filter") as FilterType;
 
       setPage(pageQuery || 1);
-      setFilter(filterQuery || "all");
+      setFilter(Number(filterQuery) ? filterQuery : "all");
 
       if (totalPages > 0) {
         if (pageQuery > totalPages) {
