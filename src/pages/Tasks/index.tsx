@@ -5,9 +5,12 @@ import { Container } from "./style";
 import { TaskDataTypes } from "../../@types/tasks";
 import { Pagination } from "../../components/Pagination";
 import { ModalTaskDetails } from "../../components/ModalTaskDetails";
+import { useTask } from "../../hooks/useTask";
 
 export function Tasks() {
   const [showModalTaskDetails, setShowModalTaskDetails] = useState(false);
+
+const { setTaskData } = useTask();
 
   const {
     data,
@@ -26,6 +29,7 @@ export function Tasks() {
 
   function addTaskToggleModal(task: TaskDataTypes) {
     toggleModal();
+    setTaskData (task);
   }
 
   return (

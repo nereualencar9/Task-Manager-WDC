@@ -4,7 +4,8 @@ import { API } from "../configs/api";
 import { toast } from "react-toastify";
 
 async function updateTask(data: TaskDataTypes) {
-  return await API.post(`task/${data.id}`, data);
+  const { id, ...rest } = data;
+  return await API.put(`task/${id}`, rest);
 }
 
 export const useTaskUpdate = () => {
@@ -16,8 +17,8 @@ export const useTaskUpdate = () => {
     },
 
     onError: () => {
-        toast.dismiss();
-        toast.success("Erro ao atualizar tarefa");
+      toast.dismiss();
+      toast.error("Erro ao atualizar tarefa");
     },
   });
 

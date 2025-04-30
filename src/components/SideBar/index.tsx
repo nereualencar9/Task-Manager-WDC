@@ -49,7 +49,7 @@ export function SideBar({ handleToggleSideBar }: SideBarProps) {
               <MenuItem title="Home" icon="home" />
             </NavLink>
 
-            <NavLink to={"/tasks"} onClick={handleToggleSideBar}>
+            <NavLink to={"/tasks?filter=all&page=1"} onClick={handleToggleSideBar}>
               <MenuItem title="Tarefas" icon="task" />
             </NavLink>
 

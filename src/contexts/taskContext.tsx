@@ -19,7 +19,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   async function deleteTask(id: string) {
     setIsLoading(true);
 
-    return API.delete(`/task/${id}`)
+    return await API.delete(`/task/${id}`)
       .then(() => {
         toast.dismiss();
         toast.success("Tarefa removida com sucesso");
