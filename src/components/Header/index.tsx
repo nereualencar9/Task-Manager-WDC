@@ -1,18 +1,18 @@
-import { useState } from "react";
 import { Container } from "./style";
-import { Link } from "react-router-dom";
 import logoRJ from "../../assets/logo-rj.png";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import { SideBar } from "../SideBar";
 
 export function Header() {
   const [showSideBar, setShowSideBar] = useState(false);
 
   function handleToggleSideBar() {
-    setShowSideBar((prevValue) => (prevValue == true ? false : true));
+    setShowSideBar((prevState) => (prevState == true ? false : true));
   }
 
   function handleKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       handleToggleSideBar();
     }
   }
@@ -30,7 +30,7 @@ export function Header() {
 
       <Link to={"/"} className="appLogo">
         <h1>Task Manager</h1>
-        <img src={logoRJ} alt="logo reprograma jucas" />
+        <img src={logoRJ} alt="logo rj reprograma jucás" />
       </Link>
 
       {showSideBar && <SideBar handleToggleSideBar={handleToggleSideBar} />}

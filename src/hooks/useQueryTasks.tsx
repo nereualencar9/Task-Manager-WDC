@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "../configs/api";
-import { UserDataTypes } from "../@types/user";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { TaskDataTypes } from "../@types/tasks";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { UserDataTypes } from "../@types/user";
 
 type FilterType = "all" | "completed" | "pending" | "late";
 
-type GetTasksPrpos = {
+type GetTasksProps = {
   page: number;
   limit: number;
   filter: FilterType;
@@ -23,13 +23,9 @@ export function useQueryTasks() {
   const location = useLocation();
   const searchParams = useSearchParams();
 
-  async function getTasks({
-    page = 1,
-    limit = 10,
-    filter = "all",
-  }: GetTasksPrpos) {
+  async function getTasks({ page = 1, limit = 10, filter = "all" }: GetTasksProps) {
     if (page <= 0) page = 1;
-    const offset = (page - 1) * limit;
+    const offset = limit * (page - 1);
 
     await changeTotalPages(filter, limit);
 
@@ -55,15 +51,15 @@ export function useQueryTasks() {
 
   function nextPage() {
     if (page < totalPages) {
-      setPage((prev) => prev + 1);
-      navigate(`?page=${page + 1}&filter=${filter}`);
+      navigate(`?filter=${filter}&page=${page + 1}`);
+      setPage((prevPage) => prevPage + 1);
     }
   }
 
   function prevPage() {
     if (page > 1) {
-      setPage((prev) => prev - 1);
-      navigate(`?page=${page - 1}&filter=${filter}`);
+      navigate(`?filter=${filter}&page=${page - 1}`);
+      setPage((prevPage) => prevPage - 1);
     }
   }
 
@@ -104,15 +100,16 @@ export function useQueryTasks() {
   }, [page, totalPages, searchParams, navigate, location]);
 
   const query = useQuery({
-    queryKey: ["tasksData", page, limit, filter ],
+    queryKey: ["tasksData", page, limit, filter],
     queryFn: () => getTasks({ page, limit, filter }),
-    refetchInterval: 1000 * 60 * 1, // 1 minute
   });
+
+  const refetchQueryTask = async () => await query.refetch();
 
   return {
     ...query,
     data: query.data,
-    refetchQueryUser: query.refetch,
+    refetchQueryTask,
     page,
     totalPages,
     nextPage,

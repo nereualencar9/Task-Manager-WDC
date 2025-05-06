@@ -1,35 +1,26 @@
 import { useState } from "react";
+import { ModalTaskDetails } from "../../components/ModalTaskDetails";
+import { Pagination } from "../../components/Pagination";
 import { TaskCard } from "../../components/TaskCard";
-import { useQueryTasks } from "../../hooks/useQueryTask";
+import { useQueryTasks } from "../../hooks/useQueryTasks";
 import { Container } from "./style";
 import { TaskDataTypes } from "../../@types/tasks";
-import { Pagination } from "../../components/Pagination";
-import { ModalTaskDetails } from "../../components/ModalTaskDetails";
 import { useTask } from "../../hooks/useTask";
 
 export function Tasks() {
   const [showModalTaskDetails, setShowModalTaskDetails] = useState(false);
+  const { setTaskData } = useTask();
 
-const { setTaskData } = useTask();
-
-  const {
-    data,
-    isLoading,
-    error,
-    changeLimit,
-    page,
-    totalPages,
-    prevPage,
-    nextPage,
-  } = useQueryTasks();
+  const { data, isLoading, error, changeLimit, page, totalPages, prevPage, nextPage } =
+    useQueryTasks();
 
   function toggleModal() {
-    setShowModalTaskDetails((prev) => (prev == true ? false : true));
+    setShowModalTaskDetails((prevState) => (prevState == true ? false : true));
   }
 
   function addTaskToggleModal(task: TaskDataTypes) {
     toggleModal();
-    setTaskData (task);
+    setTaskData(task);
   }
 
   return (
@@ -52,7 +43,7 @@ const { setTaskData } = useTask();
       {isLoading && <span className="loading">Carregando...</span>}
 
       {!isLoading && error && (
-        <span className="queryError">Erro na requisição das tarefas</span>
+        <span className="queryError">Erro na requisição das tarefas!</span>
       )}
 
       <div className="tasksContainer scrollBar">

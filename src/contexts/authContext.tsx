@@ -1,6 +1,6 @@
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import { API } from "../configs/api";
+import { PropsWithChildren, createContext, useState, useEffect } from "react";
 import { STORAGE_USERID_KEY } from "../utils/userIdAuthKey";
+import { API } from "../configs/api";
 
 export type SignInTypes = {
   email: string;
@@ -14,8 +14,8 @@ export type SignUpTypes = {
 };
 
 type AuthContextTypes = {
-  signIn: (data: SignInTypes) => Promise<boolean | void>;
-  signUp: (data: SignUpTypes) => Promise<boolean | void>;
+  signIn: (params: SignInTypes) => Promise<boolean | void>;
+  signUp: (params: SignUpTypes) => Promise<boolean | void>;
   signOut: () => void;
   authUserID: string;
   isLoading: boolean;
@@ -28,7 +28,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function signIn({ email, password }: SignInTypes) {
-    if (!email || !password) throw alert("Por favor informar email e senha");
+    if (!email || !password) throw alert("Por favor informar email e senha!");
 
     setIsLoading(true);
 
@@ -36,14 +36,17 @@ export function AuthProvider({ children }: PropsWithChildren) {
       .then((response) => {
         const userID = response.data.id;
         setAuthUserID(userID);
-
         localStorage.setItem(STORAGE_USERID_KEY, JSON.stringify(userID));
-
         return true;
       })
       .catch((error) => {
-        console.error(error);
-        alert("Erro ao fazer login");
+        if (error.response) {
+          alert(error.response.data.message);
+        } else {
+          alert("Um erro inesperado ao fazer login!");
+        }
+
+        console.error("erro ao fazer login:", error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -52,21 +55,25 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   async function signUp({ name, email, password }: SignUpTypes) {
     if (!name || !email || !password)
-      throw alert("Por favor informar nome, email e senha");
+      throw alert("Por favor informar nome, email e senha!");
 
     setIsLoading(true);
 
     return API.post("/user", { name, email, password })
       .then((response) => {
         if (response.status == 201) {
-          alert("Usuário cadastrado com sucesso!");
+          alert("Usuário criado com sucesso!");
         }
-
         return true;
       })
       .catch((error) => {
+        if (error.response) {
+          alert(error.response.data.message);
+        } else {
+          alert("Um erro inesperado ao cadastrar usuário!");
+        }
+
         console.error(error);
-        alert("Erro ao cadastrar usuário");
       })
       .finally(() => {
         setIsLoading(false);
@@ -78,7 +85,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     localStorage.removeItem(STORAGE_USERID_KEY);
 
     API.post("/logout").catch((error) => {
-      console.error(error);
+      console.error("erro ao fazer logout:", error);
     });
   }
 
@@ -98,16 +105,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
         })
         .catch((error) => {
           console.error(error);
-
-          if (error.response.status == 401) {
-            signOut();
-          }
+          if (error.response?.status == 401) signOut();
         });
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ signIn, signOut, signUp, authUserID, isLoading }}>
+    <AuthContext.Provider value={{ signIn, signUp, authUserID, signOut, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,17 +1,14 @@
 import { Container } from "./style";
 
-type MenuProps = {
+type MenuItemProps = React.LiHTMLAttributes<HTMLLIElement> & {
   title: string;
   icon: string;
-  onClick?: () => void;
 };
 
-export function MenuItem({ title, icon, onClick }: MenuProps) {
+export function MenuItem({ title, icon, onClick }: MenuItemProps) {
   return (
-    <Container>
-      <i className="material-icons" onClick={onClick}>
-        {icon}
-      </i>
+    <Container onClick={onClick}>
+      <i className="material-icons">{icon}</i>
       <span>{title}</span>
     </Container>
   );

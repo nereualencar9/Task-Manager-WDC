@@ -1,9 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { FormLogin } from "../../components/FormLogin";
 import { Container } from "./style";
 import logoReprogramaJucas from "../../assets/logo-reprograma-jucas.png";
-import { FormLogin } from "../../components/FormLogin";
-import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useEffect, useState } from "react";
+import { STORAGE_USERID_KEY } from "../../utils/userIdAuthKey";
 
 export function SignIn() {
   const navigate = useNavigate();
@@ -18,7 +19,9 @@ export function SignIn() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (delay) {
+  const authUserIDStorage = localStorage.getItem(STORAGE_USERID_KEY);
+
+  if (delay && authUserIDStorage) {
     return null;
   }
 
@@ -27,9 +30,8 @@ export function SignIn() {
       <div className="signInLogo">
         <div>
           <h1>Task Manager</h1>
-
-          <Link to={""}>
-            <img src={logoReprogramaJucas} alt="" />
+          <Link to={"https://emanuelquintino.github.io/Page-WDC/"} target="_blank">
+            <img src={logoReprogramaJucas} alt="logo-reprograma-jucas" />
           </Link>
         </div>
       </div>
@@ -40,9 +42,9 @@ export function SignIn() {
         <FormLogin />
 
         <div className="messageChangePage">
-          <span>Não tem conta? </span>
+          <span>Não tem uma conta? </span>
           <button onClick={() => navigate("/sign-up")} disabled={isLoading}>
-            Registre-se
+            Cadastro
           </button>
         </div>
       </div>

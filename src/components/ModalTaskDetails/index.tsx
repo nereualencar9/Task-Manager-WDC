@@ -1,10 +1,11 @@
-import { useEffect } from "react";
 import { Container } from "./style";
 import { FormMutationTask } from "../FormMutationTask";
+import { useEffect } from "react";
 
 type ModalTaskDetailsProps = {
   toggleModal: () => void;
 };
+
 export function ModalTaskDetails({ toggleModal }: ModalTaskDetailsProps) {
   function handleKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
     if (event.key == "Enter") {
@@ -25,18 +26,18 @@ export function ModalTaskDetails({ toggleModal }: ModalTaskDetailsProps) {
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, [toggleModal]);
+
   return (
     <Container onClick={toggleModal}>
       <div className="handleTaskContainer" onClick={toggleModal}>
         <div className="formContainer">
           <div className="headerForm">
             <h2>Detalhes da tarefa</h2>
-
             <i
-              className="material-icons"
+              className="material-icons closeIcon"
               onClick={toggleModal}
-              tabIndex={0}
               onKeyUp={handleKeyUp}
+              tabIndex={0}
             >
               close
             </i>

@@ -1,7 +1,7 @@
+import { MenuItem } from "../MenuItem";
+import { Container } from "./style";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { Container } from "./style";
-import { MenuItem } from "../MenuItem";
 
 type SideBarProps = {
   handleToggleSideBar?: () => void;
@@ -13,33 +13,22 @@ export function SideBar({ handleToggleSideBar }: SideBarProps) {
 
   function handleLogoutApp() {
     const resp = confirm("Deseja sair da aplicação?");
-
     if (resp) {
       signOut();
       navigate("/");
     }
   }
 
-  function handleCloseKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
-    if (event.key == "Enter" && handleToggleSideBar) {
-      handleToggleSideBar();
-    }
-  }
-
-  function handleLogoutKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
+  function handleKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
     if (event.key == "Enter") {
       handleLogoutApp();
     }
   }
+
   return (
     <Container onClick={handleToggleSideBar}>
       <div className="asideMenu" onClick={handleToggleSideBar}>
-        <i
-          className="material-icons closeIcon"
-          onClick={handleToggleSideBar}
-          onKeyUp={handleCloseKeyUp}
-          tabIndex={0}
-        >
+        <i className="material-icons closeIcon" onClick={handleToggleSideBar}>
           close
         </i>
 
@@ -61,7 +50,7 @@ export function SideBar({ handleToggleSideBar }: SideBarProps) {
               <MenuItem title="Sobre" icon="info" />
             </NavLink>
 
-            <div onClick={handleLogoutApp} onKeyUp={handleLogoutKeyUp} tabIndex={0}>
+            <div onClick={handleLogoutApp} onKeyUp={handleKeyUp} tabIndex={0}>
               <MenuItem title="Sair" icon="exit_to_app" />
             </div>
           </ul>

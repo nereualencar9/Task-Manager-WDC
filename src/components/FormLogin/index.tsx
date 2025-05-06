@@ -1,5 +1,5 @@
-import { SubmitHandler, useForm } from "react-hook-form";
 import { Container } from "./style";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../Button";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -20,7 +20,6 @@ export function FormLogin() {
 
   const onSubmit: SubmitHandler<InputsTypes> = async ({ email, password }) => {
     const isUserLogged = await signIn({ email, password });
-
     if (isUserLogged) {
       reset();
     }
@@ -62,7 +61,7 @@ export function FormLogin() {
           <span className="inputError">{errors.password?.message}</span>
         </section>
 
-        <Button title="Login" loading={isLoading} />
+        <Button type="submit" title={"Login"} loading={isLoading} />
       </form>
     </Container>
   );

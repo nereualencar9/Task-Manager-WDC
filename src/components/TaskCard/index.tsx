@@ -21,7 +21,7 @@ export function TaskCard({ data, onClick }: TaskCardProps) {
   };
 
   function handleKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
-    if (event.key === "Enter") {
+    if (event.key == "Enter") {
       onClick();
     }
   }

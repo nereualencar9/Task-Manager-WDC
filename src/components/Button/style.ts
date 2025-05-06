@@ -10,7 +10,7 @@ type ButtonContainerStyles = {
 export const Container = styled.button<ButtonContainerStyles>`
   background: ${({ theme, variant }) => theme.colors[variant]}DD;
   box-shadow: 1px 1px 1px #0004;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   font-size: 1.4rem;
   font-weight: 700;
   padding: 1.2rem;

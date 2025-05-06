@@ -1,10 +1,10 @@
-import { SubmitHandler, useForm } from "react-hook-form";
 import { Container } from "./style";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../Button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-type InputsTypes = {
+type Inputs = {
   name: string;
   email: string;
   password: string;
@@ -16,12 +16,12 @@ export function FormSignUp() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<InputsTypes>();
+  } = useForm<Inputs>();
 
-  const navigate = useNavigate();
   const { signUp, isLoading } = useAuth();
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<InputsTypes> = async ({ name, email, password }) => {
+  const onSubmit: SubmitHandler<Inputs> = async ({ name, email, password }) => {
     const isUserCreated = await signUp({ name, email, password });
 
     if (isUserCreated) {
@@ -37,9 +37,9 @@ export function FormSignUp() {
           <label>
             Nome:
             <input
-              autoFocus
               type="text"
-              placeholder="Digite seu nome"
+              placeholder="digite seu nome"
+              autoFocus
               {...register("name", {
                 required: "Campo obrigatório",
                 minLength: { value: 3, message: "Mínimo de 3 caracteres" },
@@ -76,7 +76,7 @@ export function FormSignUp() {
             Senha:
             <input
               type="password"
-              placeholder="digite sua senha"
+              placeholder="mínimo de 7 dígitos"
               {...register("password", {
                 required: "Campo obrigatório",
                 minLength: {
@@ -94,7 +94,12 @@ export function FormSignUp() {
           <span className="inputError">{errors.password?.message}</span>
         </section>
 
-        <Button title="Finalizar" loading={isLoading} variant="PRIMARY500" />
+        <Button
+          type="submit"
+          title={"Finalizar"}
+          variant="PRIMARY500"
+          loading={isLoading}
+        />
       </form>
     </Container>
   );

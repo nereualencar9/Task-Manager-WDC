@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import { Container } from "./style";
 
-type PaginatioProps = {
+type PaginationProps = {
   page: number;
   step?: number;
   totalPages: number;
@@ -17,16 +17,17 @@ export function Pagination({
   prevPage,
   nextPage,
   changeLimit,
-}: PaginatioProps) {
+}: PaginationProps) {
   function handleChangeLimit(event: ChangeEvent<HTMLSelectElement>) {
     changeLimit(Number(event.target.value));
   }
+
   return (
     <Container>
       <div className="limitBox">
         <span>Quantidade por página: </span>
 
-        <select defaultValue={step * 2} onChange={handleChangeLimit}>
+        <select onChange={handleChangeLimit} defaultValue={step * 2}>
           <option>{step * 1}</option>
           <option>{step * 2}</option>
           <option>{step * 3}</option>
@@ -34,7 +35,7 @@ export function Pagination({
         </select>
       </div>
 
-      <div className="pageNumber">
+      <div className="pageNumbers">
         <span>{totalPages ? page : "-"}</span>
         <span> / </span>
         <span>{totalPages || "-"}</span>

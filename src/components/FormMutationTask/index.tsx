@@ -7,10 +7,9 @@ import { useEffect } from "react";
 import { useTask } from "../../hooks/useTask";
 import { updateDate3HoursAgo } from "../../utils/updateDate3HoursAgo";
 import { toast } from "react-toastify";
-
-import { TaskDataTypes } from "../../@types/tasks";
-import { useQueryTasks } from "../../hooks/useQueryTask";
+import { useQueryTasks } from "../../hooks/useQueryTasks";
 import { useTaskUpdate } from "../../hooks/useTaskUpdate";
+import { TaskDataTypes } from "../../@types/tasks";
 
 type Inputs = TaskDataTypes & { time: string };
 
@@ -19,10 +18,7 @@ type PropsToForm = {
   toggleModal?: () => void;
 };
 
-export function FormMutationTask({
-  isUpdate = false,
-  toggleModal,
-}: PropsToForm) {
+export function FormMutationTask({ isUpdate = false, toggleModal }: PropsToForm) {
   const {
     register,
     handleSubmit,
@@ -34,7 +30,7 @@ export function FormMutationTask({
   const mutateTaskUpdate = useTaskUpdate();
   const navigate = useNavigate();
 
-  const { refetchQueryUser } = useQueryTasks();
+  const { refetchQueryTask } = useQueryTasks();
   const { taskData, deleteTask, isLoading } = useTask();
 
   async function handleDeleteTask(id?: string) {
@@ -44,7 +40,7 @@ export function FormMutationTask({
       if (resp) {
         const isDeleted = await deleteTask(id);
         if (isDeleted) {
-          refetchQueryUser();
+          refetchQueryTask();
           toggleModal();
         }
       }
@@ -86,11 +82,11 @@ export function FormMutationTask({
 
   useEffect(() => {
     if (toggleModal && mutateTaskUpdate.isSuccess) {
-      refetchQueryUser();
+      refetchQueryTask();
       toggleModal();
       reset();
     }
-  }, [mutateTaskUpdate.isSuccess, refetchQueryUser, toggleModal, reset]);
+  }, [mutateTaskUpdate.isSuccess, refetchQueryTask, toggleModal, reset]);
 
   useEffect(() => {
     if (isUpdate) {

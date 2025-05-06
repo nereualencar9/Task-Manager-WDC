@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { API } from "../configs/api";
 import { AxiosPromise } from "axios";
+import { API } from "../configs/api";
 import { UserDataTypes } from "../@types/user";
 
 export function useQueryUser() {
@@ -11,9 +11,11 @@ export function useQueryUser() {
     },
   });
 
+  const refetchQueryUser = async () => await query.refetch();
+
   return {
     ...query,
     data: query.data?.data,
-    refetchQueryUser: query.refetch,
+    refetchQueryUser,
   };
 }

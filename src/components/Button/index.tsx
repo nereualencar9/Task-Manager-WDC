@@ -3,20 +3,19 @@ import loadingGif from "../../assets/loading.gif";
 
 type ButtonTypes = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   title: string;
-  variant?: ButtonStyleType;
-  onClick?: () => void;
   loading?: boolean;
+  variant?: ButtonStyleType;
 };
 
 export function Button({
   title,
-  variant = "PRIMARY700",
-  type = "submit",
-  onClick,
+  type = "button",
   loading = false,
+  variant = "PRIMARY700",
+  onClick,
 }: ButtonTypes) {
   return (
-    <Container type={type} variant={variant} onClick={onClick} disabled={loading}>
+    <Container type={type} disabled={loading} variant={variant} onClick={onClick}>
       {loading ? <img src={loadingGif} width={14} /> : title}
     </Container>
   );
